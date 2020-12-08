@@ -5,14 +5,9 @@ import { ERC20SymbolBytes } from '../types/Factory/ERC20SymbolBytes'
 import { ERC20NameBytes } from '../types/Factory/ERC20NameBytes'
 import { User, Bundle, Token, LiquidityPosition, LiquidityPositionSnapshot, Pair } from '../types/schema'
 import { Factory as FactoryContract } from '../types/templates/Pair/Factory'
-import { 
-  fetchTokenSymbolFromTokenList,
-  fetchTokenNameFromTokenList,
-  fetchTokenDecimalsFromTokenList,
-} from './tokenList'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
-export const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
+export const FACTORY_ADDRESS = '0x415BC70ab2b2dB131E93d48532d2f214ec47B659'
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
@@ -72,10 +67,6 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
       if (!isNullEthValue(symbolResultBytes.value.toHexString())) {
         symbolValue = symbolResultBytes.value.toString()
       }
-    } else {
-      // Fallback to token list
-      log.warning('Token symbol not defined in ERC20 Contract: {}', [tokenAddress.toHexString()])
-      symbolValue = fetchTokenSymbolFromTokenList(tokenAddress)
     }
   } else {
     symbolValue = symbolResult.value
@@ -98,10 +89,6 @@ export function fetchTokenName(tokenAddress: Address): string {
       if (!isNullEthValue(nameResultBytes.value.toHexString())) {
         nameValue = nameResultBytes.value.toString()
       }
-    } else {
-      // Fallback to token list
-      log.warning('Token name not defined in ERC20 Contract: {}',  [tokenAddress.toHexString()])
-      nameValue = fetchTokenNameFromTokenList(tokenAddress)
     }
   } else {
     nameValue = nameResult.value
@@ -121,20 +108,12 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
 }
 
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
-  // hardcode overrides
-  if (tokenAddress.toHexString() == '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
-    return BigInt.fromI32(18)
-  }
-
   let contract = ERC20.bind(tokenAddress)
   // try types uint8 for decimals
   let decimalValue = null
   let decimalResult = contract.try_decimals()
   if (!decimalResult.reverted) {
     decimalValue = decimalResult.value
-  } else {
-    log.warning('Token decimals not defined in ERC20 Contract: {}', [tokenAddress.toHexString()])
-    return fetchTokenDecimalsFromTokenList(tokenAddress)
   }
   return BigInt.fromI32(decimalValue as i32)
 }
@@ -154,7 +133,7 @@ export function createLiquidityPosition(exchange: Address, user: Address): Liqui
     liquidityTokenBalance.user = user.toHexString()
     liquidityTokenBalance.save()
   }
-  if (liquidityTokenBalance === null) log.error('LiquidityTokenBalance is null', [id])
+  if (liquidityTokenBalance == null) log.error('LiquidityTokenBalance is null', [id])
   return liquidityTokenBalance as LiquidityPosition
 }
 
