@@ -8,7 +8,7 @@ dataSources:
     name: Factory
     network: idchain
     source:
-      address: '0xa09a02Cc56f493838fdCba9991D01D8A0bDda33b'
+      address: '0x415BC70ab2b2dB131E93d48532d2f214ec47B659'
       abi: Factory
       startBlock: 3107062
     mapping:
