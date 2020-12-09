@@ -3,7 +3,7 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
-const WEIDI_ADDRESS = '0x2b309226500ADc5956a422950A2AD6E6333Bb315'
+const WEIDI_ADDRESS = '0x2b309226500adc5956a422950a2ad6e6333bb315'
 
 export function getEthPriceInUSD(): BigDecimal {
   return ONE_BD
@@ -11,7 +11,7 @@ export function getEthPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x2b309226500ADc5956a422950A2AD6E6333Bb315', // WEIDI
+  '0x2b309226500adc5956a422950a2ad6e6333bb315', // WXDAI
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
@@ -28,6 +28,7 @@ export function findEthPerToken(token: Token): BigDecimal {
   if (token.id == WEIDI_ADDRESS) {
     return ONE_BD
   }
+
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]))
