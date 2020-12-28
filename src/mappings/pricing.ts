@@ -4,6 +4,7 @@ import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
 const WEIDI_ADDRESS = '0x2b309226500adc5956a422950a2ad6e6333bb315'
+const DAI_ADDRESS = '0xe1a400f340bf4eedbc4bbb553f1bff7ec4656e3e'
 
 export function getEthPriceInUSD(): BigDecimal {
   return ONE_BD
@@ -11,7 +12,8 @@ export function getEthPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x2b309226500adc5956a422950a2ad6e6333bb315', // WXDAI
+  WEIDI_ADDRESS,
+  DAI_ADDRESS
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
@@ -25,7 +27,7 @@ let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('2')
  * @todo update to be derived ETH (add stablecoin estimates)
  **/
 export function findEthPerToken(token: Token): BigDecimal {
-  if (token.id == WEIDI_ADDRESS) {
+  if (token.id == DAI_ADDRESS) {
     return ONE_BD
   }
 
