@@ -4,7 +4,7 @@ import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD } from './helpers'
 
 const WEIDI_ADDRESS = '0x2b309226500adc5956a422950a2ad6e6333bb315'
-const DAI_ADDRESS = '0xe1a400f340bf4eedbc4bbb553f1bff7ec4656e3e'
+const DAI_ADDRESS = '0x128741612e7575aea3f6e94cb567c75c4c415d89'
 
 export function getEthPriceInUSD(): BigDecimal {
   return ONE_BD
